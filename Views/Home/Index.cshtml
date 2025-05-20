@@ -1,0 +1,49 @@
+﻿@model IEnumerable<ExtractDataFromExcel.Models.Employee>
+@{
+    ViewData["Title"] = "Employee List";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert-success">@TempData["Message"]</div>
+}
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger">@TempData["Error"]</div>
+}
+
+@* <a asp-action="Create" class="btn btn-primary mb-3">Add New Employee</a>
+<a asp-action="Upload" class="btn btn-secondary mb-3">Upload File</a> *@
+
+<table class="table table-bordered table-striped">
+    <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Salary</th>
+            <th>Age</th>
+            <th>Joining Date</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var emp in Model.Select((e, index) => new { e, index }))
+        {
+            <tr>
+                <td>@emp.e.Name</td>
+                <td>@emp.e.Email</td>
+                <td>@emp.e.Phone</td>
+                <td>@emp.e.Salary</td>
+                <td>@emp.e.Age</td>
+                <td>@emp.e.JoiningDate.ToShortDateString()</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@emp.index" class="btn btn-sm btn-primary">Edit</a>
+                    <a asp-action="Delete" asp-route-id="@emp.index" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

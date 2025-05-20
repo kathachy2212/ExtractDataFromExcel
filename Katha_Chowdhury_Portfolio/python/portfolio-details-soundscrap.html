@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Portfolio Details - Project</title>
+    <meta content="" name="description">
+    <meta content="" name="keywords">
+
+    <!-- Favicons -->
+    <link href="/assets/img/fav-icon.png" rel="icon">
+    <link href="/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+    <!-- Vendor CSS Files -->
+    <link href="/assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="/assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="/assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS File -->
+    <link href="/assets/css/main.css" rel="stylesheet">
+
+    <!-- =======================================================
+  * Template Name: MyResume
+  * Template URL: https://bootstrapmade.com/free-html-bootstrap-template-my-resume/
+  * Updated: Jun 29 2024 with Bootstrap v5.3.3
+  * Author: BootstrapMade.com
+  * License: https://bootstrapmade.com/license/
+  ======================================================== -->
+</head>
+
+<body class="portfolio-details-page">
+
+    <header id="header" class="header d-flex flex-column justify-content-center">
+
+        <i class="header-toggle d-xl-none bi bi-list"></i>
+
+        <nav id="navmenu" class="navmenu">
+            <ul>
+                <li><a href="#hero"><i class="bi bi-house navicon"></i><span>Home</span></a></li>
+                <li><a href="#about"><i class="bi bi-person navicon"></i><span>About</span></a></li>
+                <li><a href="#resume"><i class="bi bi-file-earmark-text navicon"></i><span>Resume</span></a></li>
+                <li><a href="#portfolio"><i class="bi bi-images navicon"></i><span>Portfolio</span></a></li>
+                <li><a href="#services"><i class="bi bi-hdd-stack navicon"></i><span>Services</span></a></li>
+                <li><a href="#contact"><i class="bi bi-envelope navicon"></i><span>Contact</span></a></li>
+            </ul>
+        </nav>
+
+    </header>
+
+    <main class="main">
+
+        <!-- Page Title -->
+        <div class="page-title" data-aos="fade">
+            <div class="container">
+                <nav class="breadcrumbs">
+                    <ol>
+                        <li><a href="/index.html">Home</a></li>
+                        <li class="current">Portfolio Details</li>
+                    </ol>
+                </nav>
+                <h1>YouTube Audio to Text Converter</h1>
+            </div>
+        </div><!-- End Page Title -->
+
+        <!-- Portfolio Details Section -->
+        <section id="portfolio-details" class="portfolio-details section">
+
+            <div class="container" data-aos="fade-up">
+
+                <div class="portfolio-details-slider swiper init-swiper">
+                    <script type="application/json" class="swiper-config">
+            {
+              "loop": true,
+              "speed": 600,
+              "autoplay": {
+                "delay": 5000
+              },
+              "slidesPerView": "auto",
+              "navigation": {
+                "nextEl": ".swiper-button-next",
+                "prevEl": ".swiper-button-prev"
+              },
+              "pagination": {
+                "el": ".swiper-pagination",
+                "type": "bullets",
+                "clickable": true
+              }
+            }
+          </script>
+                    <div class="swiper-wrapper align-items-center">
+
+                        <div class="swiper-slide">
+                            <img src="/assets/img/portfolio/resj-1.png" style="height: 600px !important;" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="/assets/img/portfolio/resj-2.png" style="height: 600px !important;" alt="">
+                        </div>
+
+                        <div class="swiper-slide">
+                            <img src="/assets/img/portfolio/resj-3.png" style="height: 600px !important;" alt="">
+                        </div>
+                    </div>
+                    <div class="swiper-button-prev"></div>
+                    <div class="swiper-button-next"></div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+                <div class="row justify-content-between gy-4 mt-4">
+
+                    <div class="col-lg-8" data-aos="fade-up">
+                        <div class="portfolio-description">
+
+                            <div>
+                                <p><b>Title:</b> YT Audio Transcriber – Convert YouTube Videos to Downloadable Audio &
+                                    Text</p>
+                                <p>YT Audio Transcriber is a web application that allows users to paste a YouTube video
+                                    link, convert the audio into text using speech recognition, and download both the
+                                    audio file (MP3) and transcribed text (PDF). This project was built to help users
+                                    easily extract and save important content like lectures, interviews, or tutorials.
+                                </p>
+                            </div>
+
+
+                            <div>
+                                <h5>Tools & Technologies Used</h5>
+                                <ul>
+                                    <li>Backend: Django (Python)</li>
+                                    <li>Frontend: HTML, CSS, Bootstrap, JavaScript</li>
+                                    <li>YouTube Download: pytube or youtube_dl</li>
+                                    <li>Audio Conversion: ffmpeg</li>
+                                    <li>Speech Recognition: SpeechRecognition, pydub</li>
+                                    <li>PDF Export: xhtml2pdf</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h5>Goals & Objectives</h5>
+                                <ul>
+                                    <li>Allow users to extract audio from YouTube videos.</li>
+                                    <li>Use speech-to-text technology to transcribe the audio.</li>
+                                    <li>Enable users to download both audio and transcription.</li>
+                                    <li>Ensure a clean and user-friendly experience with minimal steps.</li>
+                                </ul>
+                            </div>
+
+
+
+                            <div>
+                                <h5>Features</h5>
+                                <ul>
+                                    <li>User Authentication
+                                        <ul>
+                                            <li>Secure signup and login system to manage access.</li>
+                                        </ul>
+                                    </li>
+                                    <li>YouTube Link Input
+                                        <ul>
+                                            <li>After login, users can paste any YouTube video link.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Audio Extraction & Conversion
+                                        <ul>
+                                            <li>Automatically converts YouTube video to MP3 format.</li>
+                                        </ul>
+                                    </li>
+                                    <li>Speech-to-Text Transcription
+                                        <ul>
+                                            <li>Extracts spoken content from the video and converts it to readable text.
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li>Download Options
+                                        <ul>
+                                            <li>MP3 file of the audio</li>
+                                            <li>PDF document of the transcribed text</li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+
+
+                            <div>
+                                <h5>User Flow / Journey Map</h5>
+                                <ul>
+                                    <li>User registers or logs in to the platform.</li>
+                                    <li>User pastes a YouTube video URL.</li>
+                                    <li>System downloads and converts the video to audio.</li>
+                                    <li>Audio is processed and transcribed to text.</li>
+                                    <li>User is provided with download buttons for: The MP3 audio & The PDF
+                                        transcription</li>
+                                </ul>
+                            </div>
+
+
+                            <div>
+                                <h5>Future upgrades could include</h5>
+                                <ul>
+                                    <li>Add language selection and translation support</li>
+                                </ul>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3" data-aos="fade-up" data-aos-delay="100">
+                        <div class="portfolio-info">
+                            <h3>Project information</h3>
+                            <ul>
+                                <li><strong>Category</strong>Web Application Development</li>
+                                <li><strong>Type</strong> Own</li>
+                                <li><strong>Project URL</strong>
+                                    <a
+                                        href="https://github.com/kathachy2212/Convert_Audio_From_Video_AND_Scrape_Sound">https://github.com/kathachy2212/Convert_Audio_From_Video_AND_Scrape_Sound</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section><!-- /Portfolio Details Section -->
+
+    </main>
+
+    <footer id="footer" class="footer position-relative light-background py-5">
+        <div class="container text-center">
+            <h3 class="sitename">Katha Chowdhury</h3>
+            <p>Passionate about building efficient software solutions and creating user-centric applications. Always
+                focused
+                on leveraging the latest technologies to craft impactful and scalable products.</p>
+
+            <div class="social-links d-flex justify-content-center my-4">
+                <a href="https://www.linkedin.com/in/kathachowdhury/" class="mx-3" target="_blank">
+                    <i class="bi bi-linkedin"></i>
+                </a>
+                <a href="mailto:kothachowdhury.123456@gmail.com" class="mx-3" target="_blank">
+                    <i class="bi bi-envelope-fill"></i> <!-- Gmail icon -->
+                </a>
+                <a href="https://www.behance.net/kathachowdhary" class="mx-3" target="_blank">
+                    <i class="bi bi-behance"></i> <!-- Behance icon -->
+                </a>
+                <a href="https://www.instagram.com/kathachowdhury_22/" class="mx-3" target="_blank">
+                    <i class="bi bi-instagram"></i>
+                </a>
+                <a href="skype:live:.cid.2ad3109ab01decc2?chat" class="mx-3" target="_blank">
+                    <i class="bi bi-skype"></i>
+                </a>
+            </div>
+
+            <div class="container">
+                <div class="copyright">
+                    <span>Copyright &copy; </span><strong class="px-1 sitename">Katha Chowdhury</strong><span> - All
+                        Rights
+                        Reserved</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+            class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Preloader -->
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/assets/vendor/php-email-form/validate.js"></script>
+    <script src="/assets/vendor/aos/aos.js"></script>
+    <script src="/assets/vendor/typed.js/typed.umd.js"></script>
+    <script src="/assets/vendor/purecounter/purecounter_vanilla.js"></script>
+    <script src="/assets/vendor/waypoints/noframework.waypoints.js"></script>
+    <script src="/assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="/assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+    <script src="/assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+    <script src="/assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="/assets/js/main.js"></script>
+
+</body>
+
+</html>
