@@ -1,7 +1,8 @@
 ﻿@model ExtractDataFromExcel.Models.Employee
+
 @{
-    ViewData["Title"] = ViewBag.Index != null ? "Edit Employee" : "Create Employee";
-    var isEdit = ViewBag.Index != null;
+    bool isEdit = Model?.Id > 0;
+    ViewData["Title"] = isEdit ? "Edit Employee" : "Create Employee";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -9,7 +10,7 @@
 <form asp-action="@(isEdit ? "Edit" : "Create")" method="post">
     @if (isEdit)
     {
-        <input type="hidden" name="id" value="@ViewBag.Index" />
+        <input asp-for="Id" type="hidden" />
     }
 
     <div class="form-group">

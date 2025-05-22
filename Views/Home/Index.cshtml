@@ -14,9 +14,6 @@
     <div class="alert alert-danger">@TempData["Error"]</div>
 }
 
-@* <a asp-action="Create" class="btn btn-primary mb-3">Add New Employee</a>
-<a asp-action="Upload" class="btn btn-secondary mb-3">Upload File</a> *@
-
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
         <tr>
@@ -40,10 +37,34 @@
                 <td>@emp.e.Age</td>
                 <td>@emp.e.JoiningDate.ToShortDateString()</td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@emp.index" class="btn btn-sm btn-primary">Edit</a>
-                    <a asp-action="Delete" asp-route-id="@emp.index" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</a>
+                    <a asp-action="Edit" asp-route-id="@emp.e.Id" class="btn btn-sm btn-primary">Edit</a>
+                    <button class="btn btn-sm btn-danger delete-btn" data-id="@emp.e.Id">Delete</button>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        $(document).ready(function () {
+            $('.delete-btn').click(function () {
+                const id = $(this).data('id');
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/Home/Delete/' + id;
+                    }
+                });
+            });
+        });
+    </script>
+}

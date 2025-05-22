@@ -55,5 +55,44 @@ namespace ExtractDataFromExcel.Services
         {
             return await Task.FromResult(_context.Employees.ToList());
         }
+
+        public async Task BulkInsertEmployeesAsync(List<Employee> employees)
+        {
+            _context.Employees.AddRange(employees);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> UpdateEmployeeAsync(int id, Employee updatedEmployee)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
+                return false;
+
+            employee.Name = updatedEmployee.Name;
+            employee.Email = updatedEmployee.Email;
+            employee.Phone = updatedEmployee.Phone;
+            employee.Salary = updatedEmployee.Salary;
+            employee.Age = updatedEmployee.Age;
+            employee.JoiningDate = updatedEmployee.JoiningDate;
+
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<bool> DeleteEmployeeAsync(int id)
+        {
+            var employee = await _context.Employees.FindAsync(id);
+            if (employee == null)
+                return false;
+
+            _context.Employees.Remove(employee);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task<Employee> GetEmployeeByIdAsync(int id)
+        {
+            return await _context.Employees.FindAsync(id);
+        }
     }
 }

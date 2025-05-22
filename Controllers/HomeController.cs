@@ -1,5 +1,6 @@
 using ClosedXML.Excel;
 using ExtractDataFromExcel.Models;
+using ExtractDataFromExcel.Services;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -8,11 +9,17 @@ namespace ExtractDataFromExcel.Controllers
     public class HomeController : Controller
     {
         // Simulated in-memory database
-        private static List<Employee> _employees = new List<Employee>();
+        private readonly IEmployeeService _employeeService;
 
-        public IActionResult Index()
+        public HomeController(IEmployeeService employeeService)
         {
-            return View(_employees);
+            _employeeService = employeeService;
+        }
+
+        public async Task<IActionResult> Index()
+        {
+            var employees = await _employeeService.GetAllEmployeesAsync();
+            return View(employees);
         }
 
         public IActionResult Create()
@@ -21,17 +28,70 @@ namespace ExtractDataFromExcel.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Employee employee)
+        public async Task<IActionResult> Create(Employee employee)
         {
             if (ModelState.IsValid)
             {
-                _employees.Add(employee);
+                await _employeeService.AddEmployeeAsync(employee);
                 TempData["Message"] = "Employee added successfully.";
                 return RedirectToAction("Index");
             }
 
             return View(employee);
         }
+
+        public async Task<IActionResult> Edit(int id)
+        {
+            var employee = await _employeeService.GetEmployeeByIdAsync(id);
+
+            if (employee == null)
+            {
+                TempData["Error"] = "Employee not found.";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.IsEdit = true;
+            return View("Create", employee);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(int id, Employee employee)
+        {
+            if (ModelState.IsValid)
+            {
+                var updateResult = await _employeeService.UpdateEmployeeAsync(id, employee);
+                if (updateResult)
+                {
+                    TempData["Message"] = "Employee updated successfully.";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["Error"] = "Employee not found.";
+                    return RedirectToAction("Index");
+                }
+            }
+
+            ViewBag.Index = id;
+            return View("Create", employee);
+        }
+
+
+        public async Task<IActionResult> Delete(int id)
+        {
+            var deleteResult = await _employeeService.DeleteEmployeeAsync(id);
+            if (deleteResult)
+            {
+                TempData["Message"] = "Employee deleted successfully.";
+            }
+            else
+            {
+                TempData["Error"] = "Invalid employee ID.";
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
         public IActionResult Upload()
         {
@@ -48,6 +108,7 @@ namespace ExtractDataFromExcel.Controllers
             }
 
             var extension = Path.GetExtension(file.FileName).ToLower();
+            var employees = new List<Employee>();
 
             try
             {
@@ -58,23 +119,31 @@ namespace ExtractDataFromExcel.Controllers
                 {
                     using var workbook = new XLWorkbook(stream);
                     var worksheet = workbook.Worksheets.First();
-                    var rows = worksheet.RangeUsed().RowsUsed().Skip(1); // Skip header
+                    var rows = worksheet.RangeUsed().RowsUsed().Skip(1); // skip header
 
                     foreach (var row in rows)
                     {
-                        if (row.CellsUsed().Count() < 6) continue;
-
-                        var employee = new Employee
+                        try
                         {
-                            Name = row.Cell(1).GetValue<string>(),
-                            Email = row.Cell(2).GetValue<string>(),
-                            Phone = row.Cell(3).GetValue<string>(),
-                            Salary = row.Cell(4).GetValue<decimal>(),
-                            Age = row.Cell(5).GetValue<int>(),
-                            JoiningDate = row.Cell(6).GetValue<DateTime>()
-                        };
+                            var employee = new Employee
+                            {
+                                Name = row.Cell(1).GetValue<string>()?.Trim(),
+                                Email = row.Cell(2).GetValue<string>()?.Trim(),
+                                Phone = row.Cell(3).GetValue<string>()?.Trim(),
+                                Salary = row.Cell(4).GetValue<decimal>(),
+                                Age = row.Cell(5).GetValue<int>(),
+                                JoiningDate = row.Cell(6).GetDateTime()
+                            };
 
-                        _employees.Add(employee);
+                            if (!string.IsNullOrEmpty(employee.Name) && !string.IsNullOrEmpty(employee.Email))
+                            {
+                                employees.Add(employee);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"Row parse error: {ex.Message}");
+                        }
                     }
                 }
                 else if (extension == ".csv")
@@ -88,24 +157,34 @@ namespace ExtractDataFromExcel.Controllers
                         var line = await reader.ReadLineAsync();
                         if (isFirstRow)
                         {
-                            isFirstRow = false; // skip header
+                            isFirstRow = false;
                             continue;
                         }
 
                         var values = line.Split(',');
                         if (values.Length < 6) continue;
 
-                        var employee = new Employee
+                        try
                         {
-                            Name = values[0],
-                            Email = values[1],
-                            Phone = values[2],
-                            Salary = decimal.TryParse(values[3], out var salary) ? salary : 0,
-                            Age = int.TryParse(values[4], out var age) ? age : 0,
-                            JoiningDate = DateTime.TryParse(values[5], out var date) ? date : DateTime.MinValue
-                        };
+                            var employee = new Employee
+                            {
+                                Name = values[0].Trim(),
+                                Email = values[1].Trim(),
+                                Phone = values[2].Trim(),
+                                Salary = decimal.TryParse(values[3], out var salary) ? salary : 0,
+                                Age = int.TryParse(values[4], out var age) ? age : 0,
+                                JoiningDate = DateTime.TryParse(values[5], out var date) ? date : DateTime.MinValue
+                            };
 
-                        _employees.Add(employee);
+                            if (!string.IsNullOrEmpty(employee.Name) && !string.IsNullOrEmpty(employee.Email))
+                            {
+                                employees.Add(employee);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"CSV row parse error: {ex.Message}");
+                        }
                     }
                 }
                 else
@@ -114,62 +193,24 @@ namespace ExtractDataFromExcel.Controllers
                     return RedirectToAction("Upload");
                 }
 
-                TempData["Message"] = "File uploaded and data extracted successfully.";
+                if (employees.Any())
+                {
+                    await _employeeService.BulkInsertEmployeesAsync(employees);
+                    TempData["Message"] = "File uploaded and data saved successfully.";
+                }
+                else
+                {
+                    TempData["Error"] = "No valid employee records found in the file.";
+                }
+
                 return RedirectToAction("Index");
             }
             catch (Exception ex)
             {
-                TempData["Error"] = $"An error occurred: {ex.Message}";
+                TempData["Error"] = $"An error occurred while processing the file: {ex.Message}";
                 return RedirectToAction("Upload");
             }
         }
 
-        public IActionResult Edit(int id)
-        {
-            if (id >= 0 && id < _employees.Count)
-            {
-                var employee = _employees[id];
-                ViewBag.Index = id;
-                return View("Create", employee);
-            }
-
-            TempData["Error"] = "Invalid employee ID.";
-            return RedirectToAction("Index");
-        }
-
-        [HttpPost]
-        public IActionResult Edit(int id, Employee employee)
-        {
-            if (ModelState.IsValid && id >= 0 && id < _employees.Count)
-            {
-                _employees[id] = employee;
-                TempData["Message"] = "Employee updated successfully.";
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.Index = id;
-            return View("Create", employee);
-        }
-
-        public IActionResult Delete(int id)
-        {
-            if (id >= 0 && id < _employees.Count)
-            {
-                _employees.RemoveAt(id);
-                TempData["Message"] = "Employee deleted successfully.";
-            }
-            else
-            {
-                TempData["Error"] = "Invalid employee ID.";
-            }
-
-            return RedirectToAction("Index");
-        }
-
-        public IActionResult Privacy() => View();
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error() =>
-            View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
